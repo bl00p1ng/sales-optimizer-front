@@ -2,11 +2,16 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/components/providers/auth-provider';
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import Image from 'next/image';
+
+// Add role type
+type UserRole = 'client' | 'supervisor';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,6 +19,8 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  // Add role state
+  const [role, setRole] = useState<UserRole>('client');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +52,8 @@ export default function LoginPage() {
       
       setToken(data.access_token);
       localStorage.setItem('token', data.access_token);
-      router.push('/products');
+      // Redirect based on role
+      router.push(role === 'client' ? '/products' : '/dashboard');
     } catch (err) {
       console.error('Error completo:', err);
       setError(err instanceof Error ? err.message : 'Error al iniciar sesión');
@@ -58,6 +66,15 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <Card className="w-full max-w-md">
         <CardHeader>
+          <div className="flex justify-center items-center space-x-4 mb-4">
+            <Image 
+              src="/sales-optimizer.png"
+              alt="Sales Optimizer Logo"
+              width={100}
+              height={100}
+              className="object-contain"
+            />
+          </div>
           <CardTitle className="text-2xl text-center">Sales Optimizer</CardTitle>
         </CardHeader>
         <CardContent>
@@ -82,6 +99,21 @@ export default function LoginPage() {
                 required
               />
             </div>
+            <div className="mb-6">
+              <RadioGroup
+                defaultValue="client"
+                onValueChange={(value: string) => setRole(value as UserRole)}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="client" id="client" />
+                  <Label htmlFor="client">Cliente</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="supervisor" id="supervisor" />
+                  <Label htmlFor="supervisor">Supervisor</Label>
+                </div>
+              </RadioGroup>
+            </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
@@ -92,6 +124,15 @@ export default function LoginPage() {
             <a href="/register" className="text-primary hover:underline">
               Regístrate aquí
             </a>
+          </div>
+          <div className="flex justify-center">
+              <Image 
+                src="/ulibre.png"
+                alt="Universidad Libre Logo"
+                width={100}
+                height={100}
+                className="object-contain"
+              />
           </div>
         </CardContent>
       </Card>
