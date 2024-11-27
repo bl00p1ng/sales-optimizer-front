@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Client, Recommendation } from '@/types';
+import Image from 'next/image';
 
 interface ClientProductMapping {
   [clientId: number]: number;
@@ -42,7 +43,6 @@ export default function DashboardPage() {
       if (!response.ok) throw new Error('Error cargando clientes');
       
       const data: Client[] = await response.json();
-      // Assign product IDs to clients if they don't have one
       data.forEach(client => {
         assignProductToClient(client.id);
       });
@@ -90,6 +90,19 @@ export default function DashboardPage() {
 
   return (
     <div className="container mx-auto p-4">
+      <div className='text-center'>
+        <div className="flex justify-center items-center space-x-4 mb-4">
+          <Image 
+            src="/sales-optimizer.png"
+            alt="Sales Optimizer Logo"
+            width={100}
+            height={100}
+            className="object-contain"
+          />
+        </div>
+        <b>Sales Optimizer</b>
+      </div>
+
       <h1 className="text-3xl font-bold mb-6">Dashboard de Ventas</h1>
       
       <div className="grid md:grid-cols-2 gap-6">
@@ -146,6 +159,19 @@ export default function DashboardPage() {
             )}
           </CardContent>
         </Card>
+      </div>
+
+      <div className='mt-4 text-center'>
+        <div className="flex justify-center items-center space-x-4 mb-4">
+          <Image 
+            src="/ulibre.png"
+            alt="Universidad Libre Logo"
+            width={100}
+            height={100}
+            className="object-contain"
+          />
+        </div>
+        <b>Universidad Libre</b>
       </div>
     </div>
   );
