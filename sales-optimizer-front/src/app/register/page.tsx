@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/components/providers/auth-provider';
+import { API_URL } from '@/lib/config';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function RegisterPage() {
 
     try {
       // Registro
-      const registerResponse = await fetch('http://localhost:8000/auth/register', {
+      const registerResponse = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -44,7 +45,7 @@ export default function RegisterPage() {
       }
 
       // Login automático después del registro
-      const loginResponse = await fetch('http://localhost:8000/auth/login', {
+      const loginResponse = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/x-www-form-urlencoded',

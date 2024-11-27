@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '@/components/providers/auth-provider';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Image from 'next/image';
+import { API_URL } from '@/lib/config';
 
 // Add role type
 type UserRole = 'client' | 'supervisor';
@@ -34,7 +35,7 @@ export default function LoginPage() {
       
       console.log('Enviando request con:', formUrlEncoded.toString());
 
-      const response = await fetch('http://localhost:8000/auth/login', {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/x-www-form-urlencoded',

@@ -7,6 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Product, Recommendation } from '@/types';
 import Image from 'next/image';
+import { API_URL } from '@/lib/config';
 
 
 export default function ProductsPage() {
@@ -31,7 +32,7 @@ export default function ProductsPage() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:8000/productos/', {
+      const response = await fetch(`${API_URL}/productos/`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
@@ -59,7 +60,7 @@ export default function ProductsPage() {
       
       console.log('Enviando request con body:', requestBody);
 
-      const response = await fetch('http://localhost:8000/recomendaciones/', {
+      const response = await fetch(`${API_URL}/recomendaciones/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

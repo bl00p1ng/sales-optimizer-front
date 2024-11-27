@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Client, Recommendation } from '@/types';
 import Image from 'next/image';
+import { API_URL } from '@/lib/config';
 
 interface ClientProductMapping {
   [clientId: number]: number;
@@ -36,7 +37,7 @@ export default function DashboardPage() {
   const fetchClients = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/clientes/', {
+      const response = await fetch(`${API_URL}/clientes/`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
@@ -61,7 +62,7 @@ export default function DashboardPage() {
   const fetchClientRecommendations = async (clientId: number) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/recomendaciones/', {
+      const response = await fetch(`${API_URL}/recomendaciones/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
