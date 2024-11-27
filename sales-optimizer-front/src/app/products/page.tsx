@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Product, Recommendation } from '@/types';
+import Image from 'next/image';
+
 
 export default function ProductsPage() {
   const { token, user, isLoading: authLoading } = useAuth();
@@ -90,6 +92,19 @@ export default function ProductsPage() {
 
   return (
     <div className="container mx-auto p-4">
+      <div className='text-center'>
+        <div className="flex justify-center items-center space-x-4 mb-4">
+          <Image 
+            src="/sales-optimizer.png"
+            alt="Sales Optimizer Logo"
+            width={100}
+            height={100}
+            className="object-contain"
+          />
+        </div>
+        <b>Sales Optimizer</b>
+      </div>
+
       <h1 className="text-3xl font-bold mb-6">Productos</h1>
       
       {selectedProduct ? (
@@ -187,6 +202,19 @@ export default function ProductsPage() {
           ))}
         </div>
       )}
+
+      <div className='mt-4 text-center'>
+        <div className="flex justify-center items-center space-x-4 mb-4">
+          <Image 
+            src="/ulibre.png"
+            alt="Universidad Libre Logo"
+            width={100}
+            height={100}
+            className="object-contain"
+          />
+        </div>
+        <b>Universidad Libre</b>
+      </div>
     </div>
   );
 }
