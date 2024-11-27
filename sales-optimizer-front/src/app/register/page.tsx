@@ -104,6 +104,7 @@ export default function RegisterPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Contraseña</Label>
+              <p className="text-sm text-gray-500">La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un carácter especial</p>
               <Input
                 id="password"
                 type="password"
@@ -124,7 +125,7 @@ export default function RegisterPage() {
             </div>
             {error && (
               <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
-                {error}
+                Error al crear usuario, por favor revisa los datos e intenta nuevamente
               </div>
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>

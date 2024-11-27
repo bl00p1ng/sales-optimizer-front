@@ -115,7 +115,7 @@ export default function LoginPage() {
                 </div>
               </RadioGroup>
             </div>
-            {error && <p className="text-sm text-red-500">{error}</p>}
+            {error && <p className="text-sm text-red-500">Error al crear usuario, por favor revisa los datos e intenta nuevamente</p>}
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
             </Button>
