@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/components/providers/auth-provider';
 import { API_URL } from '@/lib/config';
+import Link from 'next/link';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -132,10 +133,11 @@ export default function RegisterPage() {
           </form>
           <div className="mt-4 text-center text-sm">
             <span className="text-gray-600">¿Ya tienes una cuenta? </span>
-            <a href="/" className="text-primary hover:underline">
+            <Link href="/" className="text-primary hover:underline">
               Inicia sesión aquí
-            </a>
+            </Link>
           </div>
+          
         </CardContent>
       </Card>
     </div>

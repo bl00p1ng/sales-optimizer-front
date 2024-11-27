@@ -48,8 +48,8 @@ export default function DashboardPage() {
         assignProductToClient(client.id);
       });
       setClients(data);
-    } catch (err) {
-      setError('Error al cargar clientes');
+    } catch (error) {
+      setError('Error al cargar clientes: ' + (error as Error).message);
     } finally {
       setLoading(false);
     }
@@ -57,6 +57,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetchClients();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchClientRecommendations = async (clientId: number) => {
