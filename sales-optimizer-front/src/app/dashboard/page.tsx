@@ -4,16 +4,33 @@ import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Client, Recommendation } from '@/types';
 
+interface ClientProductMapping {
+  [clientId: number]: number;
+}
+
 export default function DashboardPage() {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
 
-  useEffect(() => {
-    fetchClients();
-  }, []);
+  const getOrCreateClientProductMappings = (): ClientProductMapping => {
+    const stored = localStorage.getItem('clientProductMappings');
+    if (stored) {
+      return JSON.parse(stored);
+    }
+    return {};
+  };
+
+  const assignProductToClient = (clientId: number): number => {
+    const mappings = getOrCreateClientProductMappings();
+    if (!mappings[clientId]) {
+      mappings[clientId] = Math.floor(Math.random() * 30) + 1;
+      localStorage.setItem('clientProductMappings', JSON.stringify(mappings));
+    }
+    return mappings[clientId];
+  };
 
   const fetchClients = async () => {
     try {
@@ -25,6 +42,10 @@ export default function DashboardPage() {
       if (!response.ok) throw new Error('Error cargando clientes');
       
       const data: Client[] = await response.json();
+      // Assign product IDs to clients if they don't have one
+      data.forEach(client => {
+        assignProductToClient(client.id);
+      });
       setClients(data);
     } catch (err) {
       setError('Error al cargar clientes');
@@ -32,6 +53,10 @@ export default function DashboardPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchClients();
+  }, []);
 
   const fetchClientRecommendations = async (clientId: number) => {
     try {
@@ -44,6 +69,7 @@ export default function DashboardPage() {
         },
         body: JSON.stringify({
           cliente_id: clientId,
+          producto_id: assignProductToClient(clientId),
           limit: 5
         })
       });
@@ -60,6 +86,8 @@ export default function DashboardPage() {
   if (loading) return <div className="text-center p-8">Cargando...</div>;
   if (error) return <div className="text-center text-red-500 p-8">{error}</div>;
 
+  const selectedClient = clients.find((client) => client.id === selectedClientId);
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Dashboard de Ventas</h1>
@@ -74,9 +102,11 @@ export default function DashboardPage() {
               {clients.map((client) => (
                 <div 
                   key={client.id}
-                  className="p-4 border rounded-lg cursor-pointer hover:bg-gray-50"
+                  className={`p-4 border rounded-lg cursor-pointer ${
+                    selectedClientId === client.id ? 'bg-gray-100' : 'hover:bg-gray-50'
+                  }`}
                   onClick={() => {
-                    setSelectedClient(client);
+                    setSelectedClientId(client.id);
                     fetchClientRecommendations(client.id);
                   }}
                 >
